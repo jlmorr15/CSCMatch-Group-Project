@@ -1,3 +1,4 @@
-.~
+# Word temporary
+~$*.doc*
 .*
 !/.gitignore
