@@ -12,7 +12,7 @@ public class Interest {
 	
 	public String toString()
 	{
-		return level+", "+topic;
+		return "| "+String.format("%03d", level)+" | "+topic;
 	}
 	
 	public String getTopic()

@@ -87,5 +87,8 @@ public class CSCMatch {
 		john.addInterest("Java", 10);
 		System.out.println("Listing Interests for "+john.toString());
 		john.listInterests();
+		System.out.println("Updating C++ to a 9");
+		john.addInterest("C++", 9);
+		john.listInterests();
 	}
 }

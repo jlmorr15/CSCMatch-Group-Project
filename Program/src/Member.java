@@ -1,5 +1,6 @@
 import java.io.Serializable;
 import java.util.LinkedList;
+import java.util.Vector;
 
 public class Member implements Serializable {
 	private LinkedList<Interest> interests;
@@ -34,17 +35,22 @@ public class Member implements Serializable {
 	
 	public void listInterests()
 	{
-		System.out.println("Interests:\nLVL, Topic");
+		System.out.println("Interests:");
+		int longestTopic = 0;
+		
+		String output = "| LVL | Topic\n";
+		
 		for(Interest interest : interests)
 		{
-			System.out.println(interest.toString());
+			output = output+interest.toString()+"\n";
 		}
+		System.out.println(output);
 	}
 	
 	
 	/**
 	 * hasInterest
-	 * predicate method powered by matchingInterestIndex for code readability.
+	 * predicate method powered by matchingInterestIndex for code readability when index isn't needed
 	 * @param i
 	 * @return
 	 */
