@@ -1,4 +1,5 @@
 # Word temporary
+*.tmp
 ~$*.doc*
 .*
 !/.gitignore
