@@ -1,5 +1,6 @@
+import java.io.Serializable;
 
-public class Interest {
+public class Interest implements Serializable{
 
 	private String topic;
 	private int level;
