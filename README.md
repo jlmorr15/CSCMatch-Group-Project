@@ -9,3 +9,4 @@
 ## Team 2 - Turing
 
 * [Requirements](resources/CSCMatch.pdf)
+* [Use Case Tests](Tests/UseCaseTesting.pdf)
