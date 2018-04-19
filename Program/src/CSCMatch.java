@@ -107,6 +107,9 @@ public class CSCMatch {
 			System.out.println("Listing Members");
 			membership.listMembers();
 			break;
+		default:
+			System.out.println("Invalid selection, please try again");
+			break;
 		}
 	}
 	
@@ -373,6 +376,7 @@ public class CSCMatch {
 		System.out.println("Where would you like to save the members file?");
 		System.out.print("File Name: ");
 		String fileName = scanner.next();
+		scanner.nextLine(); //avoid nasty input mismatch crap
 		System.out.print("How many members do you want to generate?: ");
 		int numMembers = scanner.nextInt();
 		

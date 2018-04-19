@@ -3,6 +3,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ConcurrentModificationException;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
@@ -51,6 +53,7 @@ public class Membership {
             return true;
         } catch (IOException ex){
         	System.out.println("Error Saving Membership File. Please make sure a valid file path was provided");
+        	System.out.println(ex.getMessage());
         	return false;
         }
 	}
@@ -79,14 +82,30 @@ public class Membership {
 	public void removeMember(String meid)
 	{
 		boolean mbrFound = false;
+		//Using iterator should fix the issues encountered in testing.
+		try {
+			Iterator<Member> itr = members.iterator();
+			while(itr.hasNext()) {
+				Member mbr = itr.next();
+				if(mbr.getMEID().toLowerCase().equals(meid.toLowerCase())) {
+					System.out.println("\nRemoved member from Membership List");
+					members.remove(mbr);
+					mbrFound = true;
+				}
+			}
+		} catch(ConcurrentModificationException ex) {
+			System.out.println("Unable to remove member.");
+			System.out.println(ex.getMessage());
+		}
 		
-		for(Member mbr : members) {
+		
+		/*for(Member mbr : members) {
 			if(mbr.getMEID().toLowerCase().equals(meid.toLowerCase())) {
 				System.out.println("\nRemoved member from Membership List");
 				members.remove(mbr);
 				mbrFound = true;
 			}
-		}
+		}*/
 		
 		if(!mbrFound)
 			System.out.println("\nNo such member in Membership List");
