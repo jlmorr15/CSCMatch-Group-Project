@@ -89,7 +89,8 @@ public class Membership {
 				Member mbr = itr.next();
 				if(mbr.getMEID().toLowerCase().equals(meid.toLowerCase())) {
 					System.out.println("\nRemoved member from Membership List");
-					members.remove(mbr);
+					itr.remove();
+					//members.remove(mbr);
 					mbrFound = true;
 				}
 			}
