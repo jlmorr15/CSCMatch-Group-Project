@@ -25,4 +25,9 @@ public class Interest implements Serializable{
 	{
 		this.level = level;
 	}
+	
+	public int getLevel()
+	{
+		return this.level;
+	}
 }

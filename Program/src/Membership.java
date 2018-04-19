@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.LinkedList;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
 
 public class Membership {
 	private LinkedList<Member> members;
@@ -25,26 +27,30 @@ public class Membership {
 		members.add(mbr);
 	}
 	
-	public void loadMembers()
+	public boolean loadMembers(String fileName)
 	{
 		try {
-            ObjectInputStream oi = new ObjectInputStream(new FileInputStream(saveFile));
+			ObjectInputStream oi = new ObjectInputStream(new FileInputStream(fileName));
             Object mbrList = oi.readObject();
             members = (LinkedList<Member>)mbrList;
             oi.close();
+            return true;
         } catch (Exception ex){
-        	System.out.println("Exception: "+ex.getMessage());
-        }
+        	System.out.println("Error Loading Membership File. Please make sure it exists and is a valid membership file.");
+        	return false;
+        }	
 	}
 	
-	public void saveMembers()
+	public boolean saveMembers(String fileName)
 	{
 		try {
-            ObjectOutputStream oo = new ObjectOutputStream(new FileOutputStream(saveFile));
+            ObjectOutputStream oo = new ObjectOutputStream(new FileOutputStream(fileName));
             oo.writeObject(members);
             oo.close();
+            return true;
         } catch (IOException ex){
-        	System.out.println("Exception: "+ex.getMessage());
+        	System.out.println("Error Saving Membership File. Please make sure a valid file path was provided");
+        	return false;
         }
 	}
 	
@@ -57,9 +63,32 @@ public class Membership {
 		}
 	}
 	
-	public void removeMember(Member mbr)
+	public boolean memberExists(String meid)
 	{
-		members.remove(mbr);
+		for(Member mbr : members)
+		{
+			if(mbr.getMEID().toLowerCase().equals(meid))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public void removeMember(String meid)
+	{
+		boolean mbrFound = false;
+		
+		for(Member mbr : members) {
+			if(mbr.getMEID().toLowerCase().equals(meid.toLowerCase())) {
+				System.out.println("\nRemoved member from Membership List");
+				members.remove(mbr);
+				mbrFound = true;
+			}
+		}
+		
+		if(!mbrFound)
+			System.out.println("\nNo such member in Membership List");
 	}
 	
 	public void listMember(int c)
@@ -69,6 +98,31 @@ public class Membership {
 	
 	public void listMember(String meid)
 	{
-		
+		boolean mbrFound = false;
+		for(Member mbr : members) {
+			if(mbr.getMEID().toLowerCase().equals(meid.toLowerCase())) {
+				System.out.println(mbr);
+				mbr.listInterests();
+				mbr.calculateMatches(members);
+				mbrFound = true;
+			}
+		}
+		if(!mbrFound)
+			System.out.println("Member Not Found In List.");
+	}
+	
+	public Member getMemberByMEID(String meid) throws NoSuchElementException
+	{
+		for(Member mbr : members) {
+			if(mbr.getMEID().toLowerCase().equals(meid.toLowerCase())) {
+				return mbr;
+			}
+		}
+		throw new NoSuchElementException("Member Not Found In List");
+	}
+	
+	public int numMembers()
+	{
+		return members.size();
 	}
 }

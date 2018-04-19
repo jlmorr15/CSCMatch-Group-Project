@@ -1,9 +1,11 @@
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
-import java.util.Vector;
 
 public class Member implements Serializable {
 	private LinkedList<Interest> interests;
+	private LinkedList<MemberMatch> matches;
 	private String firstName, lastName, MEID;
 	private int year;
 	
@@ -14,6 +16,7 @@ public class Member implements Serializable {
 		MEID = id;
 		year = yr;
 		interests = new LinkedList<Interest>();
+		matches = new LinkedList<MemberMatch>();
 	}
 	
 	public String toString()
@@ -36,7 +39,6 @@ public class Member implements Serializable {
 	public void listInterests()
 	{
 		System.out.println("Interests:");
-		int longestTopic = 0;
 		
 		String output = "| LVL | Topic\n";
 		
@@ -45,6 +47,11 @@ public class Member implements Serializable {
 			output = output+interest.toString()+"\n";
 		}
 		System.out.println(output);
+	}
+	
+	private LinkedList<Interest> getInterestList()
+	{
+		return this.interests;
 	}
 	
 	
@@ -77,5 +84,66 @@ public class Member implements Serializable {
 			count++;
 		}
 		return -1;
+	}
+	
+	public String getMEID()
+	{
+		return MEID;
+	}
+	
+	public void calculateMatches(LinkedList<Member> members)
+	{
+		for(Member mbr : members)
+		{
+			float score = 0;
+			if(!mbr.getMEID().equals(this.getMEID())) {
+				//Ok we aren't looking at ourselves, lets get it on!
+				for(Interest interest : mbr.getInterestList())
+				{
+					int myInterestIndex = this.matchingInterestIndex(interest.getTopic());
+					if(myInterestIndex>-1) {
+						//DING DING DING, WE HAVE A MATCH
+						score += this.interests.get(myInterestIndex).getLevel() * interest.getLevel();
+					} else {
+						score += interest.getLevel()/2;
+					}
+				}
+				
+				//score is complete now...
+				MemberMatch match = new MemberMatch(mbr,score);
+				addMatch(match);
+			}
+		}
+		showTopMatches();
+	}
+	
+	
+	private void addMatch(MemberMatch match)
+	{
+		for(MemberMatch m : matches)
+		{
+			if(m.getMember().getMEID().equals(match.getMember().getMEID())) {
+				//Not on my watch Sucka!
+				matches.remove(m);
+			}
+		}
+		matches.add(match);
+	}
+	
+	private void showTopMatches()
+	{
+		System.out.println("Member's Top 5 Matches:");
+		Collections.sort(matches, new Comparator<MemberMatch>() {
+			public int compare(MemberMatch match1, MemberMatch match2) {
+				return Math.round(match2.getScore()) - Math.round(match1.getScore());
+			}
+		});
+		for(int i = 0; i<5; i++)
+		{
+			if(i<matches.size()) {
+				MemberMatch match = matches.get(i);
+				System.out.println(match.getScore() + ": " + match.getMember());
+			}
+		}
 	}
 }
