@@ -91,6 +91,8 @@ public class Member implements Serializable {
 		return MEID;
 	}
 	
+	
+	
 	public void calculateMatches(LinkedList<Member> members)
 	{
 		for(Member mbr : members)
@@ -123,7 +125,7 @@ public class Member implements Serializable {
 		for(MemberMatch m : matches)
 		{
 			if(m.getMember().getMEID().equals(match.getMember().getMEID())) {
-				//Not on my watch Sucka!
+				//Not on my watch!
 				matches.remove(m);
 			}
 		}
@@ -132,12 +134,8 @@ public class Member implements Serializable {
 	
 	private void showTopMatches()
 	{
-		System.out.println("Member's Top 5 Matches:");
-		Collections.sort(matches, new Comparator<MemberMatch>() {
-			public int compare(MemberMatch match1, MemberMatch match2) {
-				return Math.round(match2.getScore()) - Math.round(match1.getScore());
-			}
-		});
+		System.out.println("\nMember's Top 5 Matches:");
+		Collections.sort(matches,Collections.reverseOrder()); // Now with Comparable MemberMatch
 		for(int i = 0; i<5; i++)
 		{
 			if(i<matches.size()) {

@@ -157,7 +157,7 @@ public class CSCMatch {
 		boolean cancel = false;
 		while(!saved && !cancel)
 		{
-			System.out.print("Enter Membership List Filename or [d: default] [x: cancel]");
+			System.out.println("Enter Membership List Filename or [d: default] [x: cancel]");
 			System.out.print("Members File: ");
 			String fileName = "";
 			fileName = this.scanner.next();

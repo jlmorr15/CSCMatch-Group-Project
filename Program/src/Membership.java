@@ -37,6 +37,7 @@ public class Membership {
             return true;
         } catch (Exception ex){
         	System.out.println("Error Loading Membership File. Please make sure it exists and is a valid membership file.");
+        	System.out.println(ex.getMessage());
         	return false;
         }	
 	}

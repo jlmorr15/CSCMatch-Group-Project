@@ -1,6 +1,6 @@
 import java.io.Serializable;
 
-public class Interest implements Serializable{
+public class Interest implements Serializable, Comparable<Interest>{
 
 	private String topic;
 	private int level;
@@ -29,5 +29,13 @@ public class Interest implements Serializable{
 	public int getLevel()
 	{
 		return this.level;
+	}
+	
+	@Override
+	public int compareTo(Interest interest)
+	{
+		if(getTopic().toLowerCase().equals(interest.getTopic().toLowerCase()))
+			return 0;
+		return -1;
 	}
 }
