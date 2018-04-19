@@ -2,6 +2,7 @@ import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
+import java.util.Random;
 import java.util.Scanner;
 
 public class CSCMatch {
@@ -93,6 +94,9 @@ public class CSCMatch {
 		case "x":
 			System.out.println("\nExit Initialized. (╯°□°）╯︵ ┻━┻");
 			break;	
+		case "g":
+			generateMembers();
+			break;
 		case "t1":
 			this.test();
 			break;
@@ -362,5 +366,49 @@ public class CSCMatch {
 		
 		System.out.println("Saving Data To Disk");
 		membership.saveMembers("members.ser");
+	}
+	
+	public void generateMembers()
+	{
+		System.out.println("Where would you like to save the members file?");
+		System.out.print("File Name: ");
+		String fileName = scanner.next();
+		System.out.print("How many members do you want to generate?: ");
+		int numMembers = scanner.nextInt();
+		
+		String firstNames[] = {"Aaron", "Justin", "Adan", "Emilio", "Josh", "Jane", "Jessica", "Samantha", "Tiffany", "Susan"};
+		String lastNames[] = {"Doe", "Smith", "Wick", "Jackson", "Johnson"};
+		
+		for(int i=0; i<numMembers; i++) {
+			Random r = new Random();
+			String first = firstNames[getRandomNumberInRange(0,9)];
+			String last = lastNames[getRandomNumberInRange(0,4)];
+			String meid = first.substring(0, 3) + getRandomNumberInRange(1000000,9999999);
+			Member mbr = new Member(first, last,meid,getRandomNumberInRange(0,5));
+			
+			membership.addMemberToList(mbr);
+			
+			if(getRandomNumberInRange(0,10) > 7) {
+				mbr.addInterest("C++", getRandomNumberInRange(1,10));
+			}
+			if(getRandomNumberInRange(0,10) > 7) {
+				mbr.addInterest("Java", getRandomNumberInRange(1,10));
+			}
+			if(getRandomNumberInRange(0,10) > 7) {
+				mbr.addInterest("Assembly", getRandomNumberInRange(1,10));
+			}
+		}
+		
+		membership.saveMembers(fileName);
+	}
+	
+	private int getRandomNumberInRange(int min, int max) {
+
+		if (min >= max) {
+			throw new IllegalArgumentException("max must be greater than min");
+		}
+
+		Random r = new Random();
+		return r.nextInt((max - min) + 1) + min;
 	}
 }
